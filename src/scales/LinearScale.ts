@@ -66,9 +66,9 @@ export class LinearScale {
     // for this part, even tho var name is "x", it is referring to our price (y)
     // here domain is price; range is slider
     // given a price (y), we want to find the position in the slider range (x)
-    const { domain, range } = this;
+    // const { domain, range } = this;
     const retVal = this.getPositionFromPrice(x);
-    console.log(`Y->X||= x: ${x} | Domain: ${domain} | Range: ${range} | Ret Val: ${retVal}`);
+    // console.log(`Y->X||= x: ${x} | Domain: ${domain} | Range: ${range} | Ret Val: ${retVal}`);
     return retVal;
   }
 
@@ -125,8 +125,9 @@ export class LinearScale {
         //         |
 
         // standard eq becomes a z unit translate in y axis hence the (y-z)^2 instead of y^2
-        // https://www.desmos.com/calculator/xwzob4hpgo
-        return s * Math.sqrt((1 - (y - z) * (y - z) / (z * z)));    //x
+        // we also need to do a (z-a) in the bottom since our domain does not always start from zero; but a.
+        // https://www.desmos.com/calculator/j7glwotha2
+        return s * Math.sqrt((1 - (y - z) * (y - z) / ((z-a) * (z-a))));    //x
     }
 
     // this is opposite function of above; give x and get y
@@ -142,7 +143,7 @@ export class LinearScale {
         // const r = 0;
         // const s = 100;
         // we add a - at start since we want the bottom part of curve and a +z transform along y
-        return Math.round(-z * Math.sqrt((1 - (x * x) / (s * s))) + z); // y
+        return Math.round(- (z-a) * Math.sqrt((1 - (x * x) / (s * s))) + z); // y
     }
 
     getValueFromPixel = (x: number) => {
@@ -154,7 +155,7 @@ export class LinearScale {
         const step = 100;
         const p = (clamp(x, r, s) - r) / (s - r);   // percentage (0 to 1)
         const b = step * Math.round(this.getValueFromPosition(p * 100) / step); // round to step int
-        console.log(`P->X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
+        // console.log(`P->X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
 
         return clamp(b, a < z ? a : z, z > a ? z : a);
     };

@@ -41,12 +41,13 @@ export class CurvedScale {
 
     const p = (clamp(x, a, z) - a) / (z - a);
     const b = step * Math.round(this.getValueFromPosition(p * 100)/step);
-    console.log(`(C)X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
+    // console.log(`(C)X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
 
     return clamp(b, r < s ? r : s, s > r ? s : r);
   };
 
-  // this function is slightly different from the one in LinearScale as in the range/domains are different
+  // this function is slightly different from the one in LinearScale as in the range/domains are different when this is called
+  // hence the hardcoded r/s
   getValueFromPosition = (x: number) => {
     const {
       // @ts-ignore
@@ -56,6 +57,6 @@ export class CurvedScale {
     // @ts-ignore
     const r = 0;
     const s = 100;
-    return Math.round(-z * Math.sqrt((1 - (x*x)/(s*s))) + z); // y
+    return Math.round(- (z-a) * Math.sqrt((1 - (x*x)/(s*s))) + z); // y
   }
 }

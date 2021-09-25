@@ -8,6 +8,10 @@
 We needed a slider that allows big ranges while still allowing people to select important price points. So we have used a elliptical curve instead of linear scaling.
 The modification probably breaks the lesser used slider modes (1 and 3) and sliders with more than two handles.
 
+Min/Max should be divisible by step.
+
+Use this in `./docs/node_modules` to make `docs` load the raw files: `ln -s ../../ react-compound-slider`
+
 ## React Compound Slider
 
 Welcome to the future. React Compound Slider is a small slider component with no opinion about markup or styles.

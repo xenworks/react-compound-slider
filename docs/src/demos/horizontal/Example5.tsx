@@ -8,7 +8,7 @@ const sliderStyle = {
   width: '100%',
 };
 
-const defaultValues = [250, 350];
+const defaultValues = [200, 2000];
 
 interface SliderState {
   domain: ReadonlyArray<number>;
@@ -19,7 +19,7 @@ interface SliderState {
 
 export class Example5 extends Component<{}, SliderState> {
   state = {
-    domain: [200, 500],
+    domain: [100, 165000],
     values: defaultValues.slice(),
     update: defaultValues.slice(),
     reversed: false,
@@ -50,19 +50,27 @@ export class Example5 extends Component<{}, SliderState> {
       <div style={{ height: 150, width: '100%' }}>
         <button
           onClick={() => {
-            this.onChange([200, 300]);
-            this.onUpdate([200, 300]);
+            this.onChange([0, 165000]);
+            this.onUpdate([0, 165000]);
           }}
         >
-          SET VALUES [200, 300]
+          SET VALUES [0, 165000]
         </button>
         <button
           onClick={() => {
-            this.onChange([350, 450]);
-            this.onUpdate([350, 450]);
+              this.onChange([500, 7000]);
+              this.onUpdate([500, 7000]);
           }}
         >
-          SET VALUES [350, 450]
+          SET VALUES [500, 7000]
+        </button>
+        <button
+          onClick={() => {
+              this.onChange([50000, 100000]);
+              this.onUpdate([50000, 100000]);
+          }}
+        >
+          SET VALUES [50000, 100000]
         </button>
         <button onClick={() => this.toggleReverse()}>
           {reversed ? 'DISPLAY LOW TO HIGH' : 'DISPLAY HIGH TO LOW'}
@@ -70,7 +78,7 @@ export class Example5 extends Component<{}, SliderState> {
         <ValueViewer values={values} update={update} />
         <Slider
           mode={2}
-          step={1}
+          step={100}
           domain={domain}
           reversed={reversed}
           rootStyle={sliderStyle}
@@ -109,7 +117,7 @@ export class Example5 extends Component<{}, SliderState> {
               </div>
             )}
           </Tracks>
-          <Ticks count={10}>
+          <Ticks count={4}>
             {({ ticks }) => (
               <div className="slider-ticks">
                 {ticks.map(tick => (
