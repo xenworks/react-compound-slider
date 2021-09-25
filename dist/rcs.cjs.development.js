@@ -609,8 +609,8 @@ var LinearScale = /*#__PURE__*/function () {
       var p = (clamp(x, r, s) - r) / (s - r); // percentage (0 to 1)
 
       var b = step * Math.round(_this.getValueFromPosition(p * 100) / step); // round to step int
+      // console.log(`P->X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
 
-      console.log("P->X->Y||= x: ".concat(x, " | Domain: ").concat(_this.domain, " | Range: ").concat(_this.range, " | Ret Val: ").concat(b));
       return clamp(b, a < z ? a : z, z > a ? z : a);
     };
 
@@ -665,19 +665,18 @@ var LinearScale = /*#__PURE__*/function () {
     key: "getValue",
     value: function getValue(x) {
       if (!this.curved) {
-        var _domain = this.domain,
-            _range = this.range;
-        return (this.interpolator || (this.interpolator = this.createInterpolator(_domain, _range)))(+x);
+        var domain = this.domain,
+            range = this.range;
+        return (this.interpolator || (this.interpolator = this.createInterpolator(domain, range)))(+x);
       } // for our code, x axis is slider (0 to 100); y axis is price (min to max price)
       // for this part, even tho var name is "x", it is referring to our price (y)
       // here domain is price; range is slider
       // given a price (y), we want to find the position in the slider range (x)
+      // const { domain, range } = this;
 
 
-      var domain = this.domain,
-          range = this.range;
-      var retVal = this.getPositionFromPrice(x);
-      console.log("Y->X||= x: ".concat(x, " | Domain: ").concat(domain, " | Range: ").concat(range, " | Ret Val: ").concat(retVal));
+      var retVal = this.getPositionFromPrice(x); // console.log(`Y->X||= x: ${x} | Domain: ${domain} | Range: ${range} | Ret Val: ${retVal}`);
+
       return retVal;
     }
   }, {
@@ -945,8 +944,8 @@ var CurvedScale = /*#__PURE__*/function () {
           step = _this.step;
 
       var p = (clamp$2(x, a, z) - a) / (z - a);
-      var b = step * Math.round(_this.getValueFromPosition(p * 100) / step);
-      console.log("(C)X->Y||= x: ".concat(x, " | Domain: ").concat(_this.domain, " | Range: ").concat(_this.range, " | Ret Val: ").concat(b));
+      var b = step * Math.round(_this.getValueFromPosition(p * 100) / step); // console.log(`(C)X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
+
       return clamp$2(b, r < s ? r : s, s > r ? s : r);
     };
 

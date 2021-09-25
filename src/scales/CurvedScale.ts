@@ -41,7 +41,7 @@ export class CurvedScale {
 
     const p = (clamp(x, a, z) - a) / (z - a);
     const b = step * Math.round(this.getValueFromPosition(p * 100)/step);
-    console.log(`(C)X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
+    // console.log(`(C)X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
 
     return clamp(b, r < s ? r : s, s > r ? s : r);
   };

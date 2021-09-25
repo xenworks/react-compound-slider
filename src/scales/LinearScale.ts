@@ -66,9 +66,9 @@ export class LinearScale {
     // for this part, even tho var name is "x", it is referring to our price (y)
     // here domain is price; range is slider
     // given a price (y), we want to find the position in the slider range (x)
-    const { domain, range } = this;
+    // const { domain, range } = this;
     const retVal = this.getPositionFromPrice(x);
-    console.log(`Y->X||= x: ${x} | Domain: ${domain} | Range: ${range} | Ret Val: ${retVal}`);
+    // console.log(`Y->X||= x: ${x} | Domain: ${domain} | Range: ${range} | Ret Val: ${retVal}`);
     return retVal;
   }
 
@@ -155,7 +155,7 @@ export class LinearScale {
         const step = 100;
         const p = (clamp(x, r, s) - r) / (s - r);   // percentage (0 to 1)
         const b = step * Math.round(this.getValueFromPosition(p * 100) / step); // round to step int
-        console.log(`P->X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
+        // console.log(`P->X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
 
         return clamp(b, a < z ? a : z, z > a ? z : a);
     };
