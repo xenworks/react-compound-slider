@@ -2,10 +2,15 @@ import { ticks } from 'd3-array';
 
 import { Interpolator } from '../types';
 
+function clamp(value: number, min: number, max: number) {
+    return Math.min(Math.max(value, min), max);
+}
+
 export class LinearScale {
   interpolator: Interpolator | null;
   domain: number[] = [0, 1];
   range: number[] = [0, 1];
+  curved: boolean = true;
 
   constructor() {
     this.domain = [0, 1];
@@ -50,12 +55,21 @@ export class LinearScale {
   }
 
   getValue(x: number) {
+    if (!this.curved) {
+        const { domain, range } = this;
+        return (
+            this.interpolator ||
+            (this.interpolator = this.createInterpolator(domain, range))
+        )(+x);
+    }
+    // for our code, x axis is slider (0 to 100); y axis is price (min to max price)
+    // for this part, even tho var name is "x", it is referring to our price (y)
+    // here domain is price; range is slider
+    // given a price (y), we want to find the position in the slider range (x)
     const { domain, range } = this;
-
-    return (
-      this.interpolator ||
-      (this.interpolator = this.createInterpolator(domain, range))
-    )(+x);
+    const retVal = this.getPositionFromPrice(x);
+    console.log(`Y->X||= x: ${x} | Domain: ${domain} | Range: ${range} | Ret Val: ${retVal}`);
+    return retVal;
   }
 
   setDomain(val: number[]) {
@@ -81,7 +95,67 @@ export class LinearScale {
   }
 
   getTicks(count: number) {
-    const d = this.domain;
+    const d = this.curved ? this.range : this.domain;   // we want to use slider values as our stuff is curved
     return ticks(d[0], d[d.length - 1], count ? count : 10);
   }
+
+    getPositionFromPrice = (y: number) => {
+        // for our code, a to z is y axis i.e., price
+        // r to s is x axis i.e., slider
+        const {
+            // @ts-ignore
+            domain: [a, z],
+            // @ts-ignore
+            range: [r, s]
+        } = this;
+
+        // const r = 0;
+        // const s = 100;
+        // standard ellipse eq: x^2/a^2 + y^2/b^2 = 1 where -a<=x<=a
+        // converting to our coordinates:
+
+        //         |
+        //         |z    *
+        //         |    *
+        //         |  .*
+        // –―–―–―–―|*―–―–―–―
+        //         |r    s
+        //         |
+        //         |-z
+        //         |
+
+        // standard eq becomes a z unit translate in y axis hence the (y-z)^2 instead of y^2
+        // https://www.desmos.com/calculator/xwzob4hpgo
+        return s * Math.sqrt((1 - (y - z) * (y - z) / (z * z)));    //x
+    }
+
+    // this is opposite function of above; give x and get y
+    getValueFromPosition = (x: number) => {
+        const {
+            // @ts-ignore
+            domain: [a, z],
+            // @ts-ignore
+            range: [r, s]
+        } = this;
+
+        // @ts-ignore
+        // const r = 0;
+        // const s = 100;
+        // we add a - at start since we want the bottom part of curve and a +z transform along y
+        return Math.round(-z * Math.sqrt((1 - (x * x) / (s * s))) + z); // y
+    }
+
+    getValueFromPixel = (x: number) => {
+        const {
+            domain: [a, z],
+            range: [r, s],
+        } = this;
+
+        const step = 100;
+        const p = (clamp(x, r, s) - r) / (s - r);   // percentage (0 to 1)
+        const b = step * Math.round(this.getValueFromPosition(p * 100) / step); // round to step int
+        console.log(`P->X->Y||= x: ${x} | Domain: ${this.domain} | Range: ${this.range} | Ret Val: ${b}`);
+
+        return clamp(b, a < z ? a : z, z > a ? z : a);
+    };
 }

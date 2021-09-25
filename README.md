@@ -3,6 +3,11 @@
   <img src="https://user-images.githubusercontent.com/4615775/51296069-8fa30780-19d7-11e9-9399-ace98ee439f0.png"/></a>
 </div>
 
+# Modded for Curved Scaling
+
+We needed a slider that allows big ranges while still allowing people to select important price points. So we have used a elliptical curve instead of linear scaling.
+The modification probably breaks the lesser used slider modes (1 and 3) and sliders with more than two handles.
+
 ## React Compound Slider
 
 Welcome to the future. React Compound Slider is a small slider component with no opinion about markup or styles.

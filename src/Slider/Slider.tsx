@@ -15,6 +15,7 @@ import { Ticks } from '../Ticks';
 import { Tracks } from '../Tracks';
 import { LinearScale } from '../scales/LinearScale';
 import { DiscreteScale } from '../scales/DiscreteScale';
+import { CurvedScale } from '../scales/CurvedScale';
 
 import { SliderProps, SliderState } from './types';
 import { HandleItem } from '../types';
@@ -113,7 +114,7 @@ export class Slider<
     if (!valueToPerc || !valueToStep || !pixelToStep) {
       valueToPerc = new LinearScale();
       valueToStep = new DiscreteScale();
-      pixelToStep = new DiscreteScale();
+      pixelToStep = new CurvedScale();
 
       nextState.valueToPerc = valueToPerc;
       nextState.valueToStep = valueToStep;

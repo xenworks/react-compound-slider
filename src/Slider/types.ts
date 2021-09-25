@@ -2,6 +2,7 @@ import React from 'react';
 import { LinearScale } from '../scales/LinearScale';
 import { DiscreteScale } from '../scales/DiscreteScale';
 import { HandleItem, CustomMode } from '../types';
+import {CurvedScale} from "../scales/CurvedScale";
 
 export interface SliderProps {
   /**
@@ -100,5 +101,5 @@ export interface SliderState {
   activeHandleID: string;
   valueToPerc: LinearScale | null;
   valueToStep: DiscreteScale | null;
-  pixelToStep: DiscreteScale | null;
+  pixelToStep: CurvedScale | null;
 }

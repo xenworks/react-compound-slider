@@ -18,8 +18,8 @@ export class Ticks extends Component<TicksProps> {
 
     const ticks = (values ? values : scale.getTicks(count)).map((value) => ({
       id: `$$-${value}`,
-      value,
-      percent: scale.getValue(value),
+      value: scale.getValueFromPixel(value),
+      percent: value,
     }));
 
     const renderedChildren = children({ getEventData, activeHandleID, ticks });
