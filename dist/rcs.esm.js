@@ -547,9 +547,9 @@ var LinearScale = /*#__PURE__*/function () {
     this.getPositionFromPrice = function (y) {
       // for our code, a to z is y axis i.e., price
       // r to s is x axis i.e., slider
-      var _this$domain = _slicedToArray(_this.domain, 2);
-          _this$domain[0];
-          var z = _this$domain[1],
+      var _this$domain = _slicedToArray(_this.domain, 2),
+          a = _this$domain[0],
+          z = _this$domain[1],
           _this$range = _slicedToArray(_this.range, 2);
           _this$range[0];
           var s = _this$range[1]; // const r = 0;
@@ -566,16 +566,17 @@ var LinearScale = /*#__PURE__*/function () {
       //         |-z
       //         |
       // standard eq becomes a z unit translate in y axis hence the (y-z)^2 instead of y^2
-      // https://www.desmos.com/calculator/xwzob4hpgo
+      // we also need to do a (z-a) in the bottom since our domain does not always start from zero; but a.
+      // https://www.desmos.com/calculator/j7glwotha2
 
 
-      return s * Math.sqrt(1 - (y - z) * (y - z) / (z * z)); //x
+      return s * Math.sqrt(1 - (y - z) * (y - z) / ((z - a) * (z - a))); //x
     };
 
     this.getValueFromPosition = function (x) {
-      var _this$domain2 = _slicedToArray(_this.domain, 2);
-          _this$domain2[0];
-          var z = _this$domain2[1],
+      var _this$domain2 = _slicedToArray(_this.domain, 2),
+          a = _this$domain2[0],
+          z = _this$domain2[1],
           _this$range2 = _slicedToArray(_this.range, 2);
           _this$range2[0];
           var s = _this$range2[1]; // @ts-ignore
@@ -584,7 +585,7 @@ var LinearScale = /*#__PURE__*/function () {
       // we add a - at start since we want the bottom part of curve and a +z transform along y
 
 
-      return Math.round(-z * Math.sqrt(1 - x * x / (s * s)) + z); // y
+      return Math.round(-(z - a) * Math.sqrt(1 - x * x / (s * s)) + z); // y
     };
 
     this.getValueFromPixel = function (x) {
@@ -941,11 +942,11 @@ var CurvedScale = /*#__PURE__*/function () {
     };
 
     this.getValueFromPosition = function (x) {
-      var _this$range2 = _slicedToArray(_this.range, 2);
-          _this$range2[0];
-          var z = _this$range2[1]; // @ts-ignore
+      var _this$range2 = _slicedToArray(_this.range, 2),
+          a = _this$range2[0],
+          z = _this$range2[1]; // @ts-ignore
       var s = 100;
-      return Math.round(-z * Math.sqrt(1 - x * x / (s * s)) + z); // y
+      return Math.round(-(z - a) * Math.sqrt(1 - x * x / (s * s)) + z); // y
     };
   }
 
